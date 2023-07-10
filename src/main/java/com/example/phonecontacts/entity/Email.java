@@ -1,15 +1,12 @@
 package com.example.phonecontacts.entity;
-
+import com.example.phonecontacts.validation.EmailValidation;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
-
-import lombok.*;
-
-import java.util.List;
-
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 @Entity
-@Builder
 @Getter
 @Setter
 @AllArgsConstructor
@@ -19,13 +16,11 @@ public class Email {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 
     private Long id;
-
-
+    @EmailValidation
     private String email;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "contact_id")
     @JsonIgnore
     private Contact contact;
-
 
 }

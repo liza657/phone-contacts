@@ -10,6 +10,8 @@ import com.example.phonecontacts.repository.EmailRepository;
 import com.example.phonecontacts.repository.PhoneNumberRepository;
 import com.example.phonecontacts.repository.UserRepository;
 import com.example.phonecontacts.service.ContactService;
+import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,10 +39,10 @@ public class ContactController {
 
     @Autowired
     PhoneNumberRepository phoneNumberRepository;
-
+@Transactional
     @PostMapping("addContact")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Contact> addContact(@RequestBody Contact contact, Principal principal) {
+    public ResponseEntity<Contact> addContact(@Valid @RequestBody Contact contact, Principal principal) {
         String username = principal.getName();
         User user = userRepository.findByUsername(username);
         contact.setUser(user);
@@ -83,7 +85,7 @@ public class ContactController {
     }
 
     @PutMapping("editById/{id}")
-    public Contact editContact(@PathVariable("id") long contactId, @RequestBody Contact updatedContact) {
+    public Contact editContact(@Valid @PathVariable("id") long contactId, @RequestBody Contact updatedContact) {
         updatedContact.setId(contactId);
         return contactService.editContact(updatedContact);
     }
